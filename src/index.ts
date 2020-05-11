@@ -4,6 +4,8 @@ config();
 import * as Discord from 'discord.js';
 import onMessage from './message';
 
+import { newuser } from './util';
+
 const bot = new Discord.Client();
 
 bot.on('error', e => {
@@ -17,6 +19,10 @@ bot.on('disconnect', () => {
 });
 
 bot.on('message', onMessage);
+
+bot.on('guildMemberAdd', (m: Discord.GuildMember) => {
+	return m.guild.systemChannel.send(newuser(m));
+});
 
 function login() {
 	bot.login(process.env.TOKEN)
